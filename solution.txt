@@ -1,0 +1,11 @@
+with cte as (
+select * ,
+lead(amount) over (partition by brand order by year) le,
+ROW_NUMBER() over (partition by brand order by year) rw
+from brands)
+
+
+select brand from cte 
+where amount<le or le is null
+group by brand
+HAVING  COUNT(brand)=MAX(rw) ;
