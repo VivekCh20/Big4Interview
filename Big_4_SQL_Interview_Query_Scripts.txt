@@ -1,0 +1,85 @@
+-->> Problem Statement:
+Write a query to fetch the record of brand whose amount is increasing every year.
+
+
+-->> Dataset:
+drop table brands;
+create table brands
+(
+    Year    int,
+    Brand   varchar(20),
+    Amount  int
+);
+insert into brands values (2018, 'Apple', 45000);
+insert into brands values (2019, 'Apple', 35000);
+insert into brands values (2020, 'Apple', 75000);
+insert into brands values (2018, 'Samsung',	15000);
+insert into brands values (2019, 'Samsung',	20000);
+insert into brands values (2020, 'Samsung',	25000);
+insert into brands values (2018, 'Nokia', 21000);
+insert into brands values (2019, 'Nokia', 17000);
+insert into brands values (2020, 'Nokia', 14000);
+
+
+-- Case 1: Amount Decreases Between Years (Realme should not be returned)
+-- 2018 to 2019: Decrease in amount
+INSERT INTO brands (year, brand, amount) VALUES
+(2018, 'Realme', 50000),
+(2019, 'Realme', 40000),  -- Decrease in amount
+(2020, 'Realme', 60000);
+
+-- Case 2: Amount is Constant Over Multiple Years (Redmi should not be returned)
+-- Constant amount across all years for Redmi
+INSERT INTO brands (year, brand, amount) VALUES
+(2018, 'Redmi', 20000),
+(2019, 'Redmi', 20000),  -- Constant amount
+(2020, 'Redmi', 20000);  -- Constant amount
+
+-- Case 3: Amount Decreases in the Middle of the Years (Micromax should not be returned)
+-- Decrease in amount from 2019 to 2020 for Micromax
+INSERT INTO brands (year, brand, amount) VALUES
+(2018, 'Micromax', 22000),
+(2019, 'Micromax', 25000),
+(2020, 'Micromax', 18000);  -- Decrease in amount
+
+-- Case 4: Only the Last Row is Increasing (HTC should be returned)
+-- The last year (2020) has an increase for HTC
+INSERT INTO brands (year, brand, amount) VALUES
+(2018, 'HTC', 30000),
+(2019, 'HTC', 28000),  -- Decrease
+(2020, 'HTC', 35000);  -- Increase in amount
+
+-- Case 5: Missing Data for Some Years (Sony should be returned)
+-- Missing 2019, but increasing from 2018 to 2020
+INSERT INTO brands (year, brand, amount) VALUES
+(2018, 'Sony', 15000),
+(2020, 'Sony', 25000);  -- Missing 2019, but still increasing from 2018 to 2020
+
+-- Case 6: Strictly Increasing Amount (Windows should be returned)
+-- The amount increases every year for Windows
+INSERT INTO brands (year, brand, amount) VALUES
+(2018, 'Windows', 10000),
+(2019, 'Windows', 15000),
+(2020, 'Windows', 20000);  -- Strictly increasing
+
+-- Case 7: Strictly Decreasing Amount (Realme should not be returned)
+-- The amount decreases from 2018 to 2020 for Realme
+INSERT INTO brands (year, brand, amount) VALUES
+(2018, 'Realme', 60000),
+(2019, 'Realme', 50000),
+(2020, 'Realme', 40000);  -- Strictly decreasing
+
+-- Case 8: Increase then Decrease (Redmi should not be returned)
+-- Redmi increases from 2018 to 2019, then decreases from 2019 to 2020
+INSERT INTO brands (year, brand, amount) VALUES
+(2018, 'Redmi', 30000),
+(2019, 'Redmi', 35000),
+(2020, 'Redmi', 28000);  -- Decrease after increase
+
+-- Case 9: Decrease then Increase (Micromax should not be returned)
+-- Micromax decreases from 2018 to 2019, then increases from 2019 to 2020
+INSERT INTO brands (year, brand, amount) VALUES
+(2018, 'Micromax', 25000),
+(2019, 'Micromax', 23000),
+(2020, 'Micromax', 28000);  -- Increase after a decrease
+
